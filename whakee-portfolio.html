@@ -1,0 +1,2558 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>whakee — creator portfolio</title>
+    <meta
+      name="description"
+      content="whakee — web3 content creator, KOL and marketing lead."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DynaPuff:wght@400;600;700&family=Instrument+Sans:wght@400;500;600&family=Caveat:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --petal: #fff3f7;
+        --blush: #fff4f7;
+        --ribbon: #f9b8cf;
+        --lilac: #d9c9f5;
+        --berry: #4a0f2b;
+        --muted: #7a3552;
+        --rose: #d93a72;
+        --white: #fff;
+        --display: "DynaPuff", "Comic Sans MS", cursive;
+        --body:
+          "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+        --hand: "Caveat", "Segoe Print", cursive;
+        --pad: clamp(20px, 6vw, 96px);
+        --ease: cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 90px;
+      }
+      body {
+        margin: 0;
+        background: var(--petal);
+        color: var(--berry);
+        font-family: var(--body);
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+      }
+      a {
+        color: inherit;
+      }
+      a:focus-visible,
+      button:focus-visible {
+        outline: 3px solid var(--berry);
+        outline-offset: 4px;
+        border-radius: 8px;
+      }
+      img,
+      svg {
+        max-width: 100%;
+      }
+      h1,
+      h2,
+      h3 {
+        font-family: var(--display);
+        margin: 0;
+        font-weight: 700;
+        line-height: 1;
+      }
+      p {
+        margin: 0;
+      }
+      .hand {
+        font-family: var(--hand);
+        font-weight: 700;
+      }
+      .wrap {
+        padding-inline: var(--pad);
+      }
+      section {
+        position: relative;
+      }
+
+      /* ---------- loader ---------- */
+      .loader {
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+        display: grid;
+        place-items: center;
+        pointer-events: none;
+      }
+      .loader .half {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 50.5%;
+        background: var(--ribbon);
+        transition: transform 1s cubic-bezier(0.77, 0, 0.18, 1);
+      }
+      .loader .half.l {
+        left: 0;
+        border-right: 3px solid var(--berry);
+      }
+      .loader .half.r {
+        right: 0;
+        border-left: 3px solid var(--berry);
+      }
+      .loader .lbow {
+        position: relative;
+        z-index: 2;
+        width: min(220px, 50vw);
+        transition:
+          transform 0.6s var(--ease),
+          opacity 0.4s;
+      }
+      .loader .lbow path,
+      .loader .lbow ellipse {
+        stroke-dasharray: 420;
+        stroke-dashoffset: 420;
+        fill-opacity: 0;
+        animation:
+          draw 1.1s ease forwards,
+          fillin 0.4s 0.9s forwards;
+      }
+      .loader .ltext {
+        position: absolute;
+        bottom: 22%;
+        z-index: 2;
+        font-family: var(--hand);
+        font-size: clamp(26px, 5vw, 40px);
+        font-weight: 700;
+        opacity: 0;
+        animation: fadeup 0.5s 0.6s forwards;
+      }
+      @keyframes draw {
+        to {
+          stroke-dashoffset: 0;
+        }
+      }
+      @keyframes fillin {
+        to {
+          fill-opacity: 1;
+        }
+      }
+      @keyframes fadeup {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      body.loaded .loader .half.l {
+        transform: translateX(-102%);
+      }
+      body.loaded .loader .half.r {
+        transform: translateX(102%);
+      }
+      body.loaded .loader .lbow {
+        transform: scale(0) rotate(180deg);
+        opacity: 0;
+      }
+      body.loaded .loader .ltext {
+        opacity: 0 !important;
+        animation: none;
+      }
+
+      /* ---------- progress ribbon ---------- */
+      .progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 6px;
+        width: 100%;
+        transform-origin: left;
+        transform: scaleX(0);
+        z-index: 60;
+        background: repeating-linear-gradient(
+          45deg,
+          var(--rose) 0 10px,
+          var(--ribbon) 10px 20px
+        );
+        border-bottom: 2px solid var(--berry);
+      }
+
+      /* ---------- floating bg ---------- */
+      .floaties {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+      }
+      .floaty {
+        position: absolute;
+        opacity: 0.55;
+        animation: drift linear infinite;
+      }
+      @keyframes drift {
+        0% {
+          transform: translateY(0) rotate(0);
+        }
+        50% {
+          transform: translateY(-40px) rotate(12deg);
+        }
+        100% {
+          transform: translateY(0) rotate(0);
+        }
+      }
+      main,
+      nav,
+      footer {
+        position: relative;
+        z-index: 1;
+      }
+
+      /* ---------- nav ---------- */
+      .nav {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 18px var(--pad);
+        padding-top: calc(18px + env(safe-area-inset-top, 0px));
+        transition:
+          background 0.3s,
+          box-shadow 0.3s;
+      }
+      .nav.scrolled {
+        background: rgba(255, 243, 247, 0.85);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        box-shadow: 0 2px 0 var(--berry);
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        font-family: var(--display);
+        font-size: 28px;
+        font-weight: 700;
+      }
+      .logo span {
+        width: 42px;
+        display: inline-flex;
+        transition: transform 0.5s var(--ease);
+      }
+      .logo:hover span {
+        transform: rotate(-20deg) scale(1.2);
+      }
+      .links {
+        display: flex;
+        align-items: center;
+        gap: 32px;
+        font-weight: 500;
+        font-size: 17px;
+      }
+      .links a {
+        text-decoration: none;
+        position: relative;
+        padding: 8px 2px;
+      }
+      .links a:not(.pill)::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 2px;
+        height: 3px;
+        width: 100%;
+        background: var(--rose);
+        border-radius: 3px;
+        transform: scaleX(0);
+        transform-origin: right;
+        transition: transform 0.35s var(--ease);
+      }
+      .links a:not(.pill):hover::after {
+        transform: scaleX(1);
+        transform-origin: left;
+      }
+      .pill {
+        padding: 12px 24px !important;
+        border-radius: 999px;
+        background: var(--berry);
+        color: var(--blush) !important;
+      }
+      .burger {
+        display: none;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        border: 2px solid var(--berry);
+        background: var(--blush);
+        cursor: pointer;
+        position: relative;
+        z-index: 2;
+      }
+      .burger span {
+        position: absolute;
+        left: 12px;
+        right: 12px;
+        height: 2.5px;
+        background: var(--berry);
+        border-radius: 2px;
+        transition:
+          transform 0.35s var(--ease),
+          opacity 0.2s;
+      }
+      .burger span:nth-child(1) {
+        top: 16px;
+      }
+      .burger span:nth-child(2) {
+        top: 22.5px;
+      }
+      .burger span:nth-child(3) {
+        top: 29px;
+      }
+      .nav.open .burger span:nth-child(1) {
+        transform: translateY(6.5px) rotate(45deg);
+      }
+      .nav.open .burger span:nth-child(2) {
+        opacity: 0;
+      }
+      .nav.open .burger span:nth-child(3) {
+        transform: translateY(-6.5px) rotate(-45deg);
+      }
+
+      /* ---------- buttons ---------- */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        padding: 18px 32px;
+        border-radius: 999px;
+        font-size: 18px;
+        font-weight: 600;
+        border: 2px solid var(--berry);
+        transition:
+          transform 0.3s var(--ease),
+          box-shadow 0.3s;
+        will-change: transform;
+        cursor: pointer;
+        font-family: var(--body);
+      }
+      .btn.primary {
+        background: var(--rose);
+        color: #fff;
+        box-shadow: 5px 5px 0 var(--berry);
+      }
+      .btn.primary:hover {
+        box-shadow: 9px 9px 0 var(--berry);
+      }
+      .btn.primary:active {
+        box-shadow: 0 0 0 var(--berry);
+      }
+      .btn.ghost {
+        background: transparent;
+        color: var(--berry);
+      }
+      .btn.ghost:hover {
+        background: var(--blush);
+      }
+
+      /* ---------- hero ---------- */
+      .hero {
+        display: grid;
+        grid-template-columns: 1.25fr 1fr;
+        gap: 40px;
+        align-items: center;
+        padding-top: clamp(24px, 5vw, 64px);
+        padding-bottom: clamp(80px, 10vw, 140px);
+        min-height: calc(100vh - 90px);
+      }
+      .hello {
+        font-size: clamp(28px, 4vw, 42px);
+        color: #b02a5b;
+        transform: rotate(-3deg);
+        transform-origin: left;
+        display: inline-block;
+      }
+      .name {
+        font-size: clamp(84px, 15.5vw, 230px);
+        letter-spacing: -0.03em;
+        line-height: 0.85;
+        margin: 18px 0 26px;
+        display: flex;
+        flex-wrap: nowrap;
+        user-select: none;
+      }
+      .name .ch {
+        display: inline-block;
+        opacity: 0;
+        transform: translateY(-120%) scaleY(1.3);
+        cursor: default;
+      }
+      body.loaded .name .ch {
+        animation: dropin 0.9s var(--ease) forwards;
+        animation-delay: calc(0.9s + var(--i) * 0.08s);
+      }
+      @keyframes dropin {
+        0% {
+          opacity: 0;
+          transform: translateY(-120%) scaleY(1.3);
+        }
+        60% {
+          opacity: 1;
+          transform: translateY(6%) scaleY(0.82) scaleX(1.12);
+        }
+        80% {
+          opacity: 1;
+          transform: translateY(-4%) scaleY(1.05);
+        }
+        100% {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      body.loaded .name .ch.jump {
+        animation: jump 0.6s var(--ease);
+        opacity: 1;
+      }
+      @keyframes jump {
+        0% {
+          transform: none;
+        }
+        30% {
+          transform: translateY(-22%) rotate(-8deg) scale(1.08);
+          color: var(--rose);
+        }
+        100% {
+          transform: none;
+        }
+      }
+      .lede {
+        font-size: clamp(19px, 2vw, 26px);
+        line-height: 1.45;
+        max-width: 600px;
+      }
+      .roles {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 26px 0 30px;
+        max-width: 680px;
+      }
+      .role {
+        padding: 10px 18px;
+        border-radius: 999px;
+        background: var(--blush);
+        border: 2px solid var(--berry);
+        font-size: 15px;
+        font-weight: 600;
+        transition:
+          transform 0.3s var(--ease),
+          background 0.3s;
+      }
+      .role:hover {
+        transform: translateY(-4px) rotate(-2deg);
+        background: var(--ribbon);
+      }
+      .role.lilac {
+        background: var(--lilac);
+      }
+      .ctas {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+      }
+
+      .stage {
+        position: relative;
+        height: clamp(480px, 48vw, 640px);
+      }
+      .polaroid {
+        position: absolute;
+        top: 9%;
+        left: 50%;
+        width: min(380px, 78%);
+        padding: 18px 18px 70px;
+        background: #fff;
+        border: 2px solid var(--berry);
+        box-shadow: 12px 12px 0 var(--ribbon);
+        transform: translateX(-50%) rotate(4deg);
+        transition: transform 0.2s ease-out;
+      }
+      .photo {
+        aspect-ratio: 4/5;
+        background: var(--ribbon);
+        border: 2px dashed var(--berry);
+        display: grid;
+        place-items: center;
+        font-weight: 600;
+        text-align: center;
+        overflow: hidden;
+        position: relative;
+        padding: 10px;
+      }
+      .photo img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .photo::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          115deg,
+          transparent 30%,
+          rgba(255, 255, 255, 0.55) 45%,
+          transparent 60%
+        );
+        transform: translateX(-100%);
+        animation: shine 4.5s 3s infinite;
+      }
+      @keyframes shine {
+        0%,
+        70% {
+          transform: translateX(-100%);
+        }
+        100% {
+          transform: translateX(100%);
+        }
+      }
+      .polaroid .cap {
+        margin-top: 16px;
+        text-align: center;
+        font-size: clamp(26px, 3vw, 34px);
+      }
+      .bigbow {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: clamp(140px, 15vw, 200px);
+        transform-origin: 50% 45%;
+        animation: wiggle 3.2s ease-in-out infinite;
+        z-index: 3;
+        filter: drop-shadow(4px 5px 0 rgba(74, 15, 43, 0.25));
+        cursor: pointer;
+        translate: -50% 0;
+      }
+      @keyframes wiggle {
+        0%,
+        100% {
+          transform: rotate(6deg);
+        }
+        50% {
+          transform: rotate(-6deg) scale(1.04);
+        }
+      }
+      .sticker {
+        position: absolute;
+        border: 2px solid var(--berry);
+        font-weight: 600;
+        z-index: 4;
+        animation: bob 4s ease-in-out infinite;
+      }
+      .sticker.s1 {
+        bottom: 10%;
+        left: 0;
+        padding: 14px 22px;
+        border-radius: 16px;
+        background: var(--lilac);
+        font-family: var(--display);
+        font-size: clamp(18px, 2vw, 22px);
+        --r: -6deg;
+      }
+      .sticker.s2 {
+        bottom: 2%;
+        right: 0;
+        padding: 12px 20px;
+        border-radius: 999px;
+        background: var(--blush);
+        font-size: 16px;
+        --r: 5deg;
+        animation-delay: -2s;
+      }
+      .sticker.s3 {
+        top: 28%;
+        right: 0;
+        width: 86px;
+        height: 86px;
+        border-radius: 50%;
+        background: var(--rose);
+        color: #fff;
+        display: grid;
+        place-items: center;
+        text-align: center;
+        font-family: var(--hand);
+        font-size: 22px;
+        line-height: 0.9;
+        animation: spin 14s linear infinite;
+      }
+      @keyframes bob {
+        0%,
+        100% {
+          transform: translateY(0) rotate(var(--r));
+        }
+        50% {
+          transform: translateY(-14px) rotate(calc(var(--r) * -0.5));
+        }
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .hero-anim {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+      body.loaded .hero-anim {
+        animation: fadeup 0.8s var(--ease) forwards;
+        animation-delay: var(--d, 1.4s);
+      }
+
+      /* ---------- marquee ribbons ---------- */
+      .ribbons {
+        position: relative;
+        height: 190px;
+        overflow: hidden;
+        margin: -40px 0;
+      }
+      .band {
+        position: absolute;
+        left: -5%;
+        width: 110%;
+        border-block: 3px solid var(--berry);
+        overflow: hidden;
+        white-space: nowrap;
+      }
+      .band.a {
+        top: 30px;
+        background: var(--rose);
+        color: #fff;
+        transform: rotate(-3deg);
+        z-index: 2;
+      }
+      .band.b {
+        top: 95px;
+        background: var(--lilac);
+        transform: rotate(2.5deg);
+      }
+      .track {
+        display: inline-flex;
+        gap: 36px;
+        padding: 16px 0;
+        animation: marquee 26s linear infinite;
+        font-family: var(--display);
+        font-size: clamp(22px, 3vw, 34px);
+        font-weight: 600;
+      }
+      .band.b .track {
+        animation-direction: reverse;
+        animation-duration: 32s;
+      }
+      .track > span {
+        display: inline-flex;
+        align-items: center;
+        gap: 36px;
+      }
+      .track svg {
+        width: 40px;
+        flex: none;
+      }
+      @keyframes marquee {
+        to {
+          transform: translateX(-50%);
+        }
+      }
+      .ribbons:hover .track {
+        animation-play-state: paused;
+      }
+
+      /* ---------- section heads ---------- */
+      .sec {
+        padding-block: clamp(80px, 10vw, 140px);
+      }
+      .head {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 32px;
+        flex-wrap: wrap;
+        margin-bottom: clamp(40px, 5vw, 64px);
+      }
+      .head h2 {
+        font-size: clamp(44px, 6.5vw, 86px);
+        max-width: 820px;
+      }
+      .head p {
+        font-size: clamp(17px, 1.6vw, 20px);
+        line-height: 1.55;
+        max-width: 440px;
+      }
+      .split-word {
+        display: inline-block;
+        overflow: hidden;
+        vertical-align: bottom;
+        padding-bottom: 0.1em;
+        margin-bottom: -0.1em;
+      }
+      .split-word > span {
+        display: inline-block;
+        transform: translateY(110%) rotate(6deg);
+        transition: transform 0.9s var(--ease);
+        transition-delay: calc(var(--w) * 0.07s);
+      }
+      .in .split-word > span {
+        transform: none;
+      }
+
+      /* reveal */
+      .rv {
+        opacity: 0;
+        transform: translateY(50px) scale(0.96);
+        transition:
+          opacity 0.8s ease,
+          transform 0.9s var(--ease);
+        transition-delay: calc(var(--i, 0) * 0.1s);
+      }
+      .rv.in {
+        opacity: 1;
+        transform: none;
+      }
+
+      /* ---------- what I do ---------- */
+      .band-light {
+        background: #fff;
+        border-block: 2px solid var(--berry);
+      }
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 22px;
+      }
+      .card {
+        padding: 32px 28px;
+        border: 2px solid var(--berry);
+        border-radius: 28px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        min-height: 320px;
+        background: #fff;
+        position: relative;
+        overflow: hidden;
+      }
+      .card.rv.in {
+        transition:
+          transform 0.25s ease-out,
+          box-shadow 0.3s,
+          opacity 0.8s;
+      }
+      .card:nth-child(1) {
+        background: var(--ribbon);
+        border-radius: 28px 28px 28px 4px;
+      }
+      .card:nth-child(3) {
+        background: var(--lilac);
+        border-radius: 4px 28px 28px 28px;
+      }
+      .card:nth-child(even) {
+        margin-top: 28px;
+      }
+      .card:hover {
+        box-shadow: 10px 10px 0 var(--berry);
+      }
+      .card h3 {
+        font-size: 30px;
+        font-weight: 600;
+      }
+      .card p {
+        font-size: 17px;
+        line-height: 1.5;
+      }
+      .card .ico {
+        width: 56px;
+        height: 56px;
+        border-radius: 18px;
+        border: 2px solid var(--berry);
+        background: var(--blush);
+        display: grid;
+        place-items: center;
+        transition: transform 0.5s var(--ease);
+      }
+      .card:hover .ico {
+        transform: rotate(-12deg) scale(1.15);
+      }
+      .card .num {
+        position: absolute;
+        right: -6px;
+        bottom: -40px;
+        font-family: var(--display);
+        font-size: 150px;
+        opacity: 0.08;
+        pointer-events: none;
+      }
+      .tools {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+        margin-top: 56px;
+      }
+      .tools .hand {
+        font-size: 30px;
+        margin-right: 6px;
+      }
+      .chip {
+        padding: 8px 16px;
+        border-radius: 999px;
+        border: 2px solid var(--berry);
+        font-size: 15px;
+        font-weight: 500;
+        transition: all 0.3s var(--ease);
+      }
+      .chip:hover {
+        background: var(--berry);
+        color: var(--blush);
+        transform: translateY(-3px) scale(1.06);
+      }
+
+      /* ---------- brands: clothesline ---------- */
+      .line-wrap {
+        position: relative;
+      }
+      .clothesline {
+        position: absolute;
+        left: -2%;
+        width: 104%;
+        top: 0;
+        height: 60px;
+        pointer-events: none;
+        overflow: visible;
+      }
+      .clothesline path {
+        stroke-dasharray: 1200;
+        stroke-dashoffset: 1200;
+        transition: stroke-dashoffset 2s ease;
+      }
+      .line-wrap.in .clothesline path {
+        stroke-dashoffset: 0;
+      }
+      .tags {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 60px 26px;
+        padding-top: 50px;
+      }
+      .tagw {
+        position: relative;
+        transform-origin: 34px -40px;
+        animation: sway 5s ease-in-out infinite;
+        animation-delay: calc(var(--i) * -0.7s);
+      }
+      @keyframes sway {
+        0%,
+        100% {
+          transform: rotate(calc(var(--r, 0deg) - 1.5deg));
+        }
+        50% {
+          transform: rotate(calc(var(--r, 0deg) + 1.5deg));
+        }
+      }
+      .tagw.swing {
+        animation: bigswing 1.4s var(--ease);
+      }
+      @keyframes bigswing {
+        0% {
+          transform: rotate(0);
+        }
+        20% {
+          transform: rotate(14deg);
+        }
+        40% {
+          transform: rotate(-10deg);
+        }
+        60% {
+          transform: rotate(6deg);
+        }
+        80% {
+          transform: rotate(-3deg);
+        }
+        100% {
+          transform: rotate(0);
+        }
+      }
+      .string {
+        position: absolute;
+        top: -42px;
+        left: 33px;
+        width: 2px;
+        height: 62px;
+        background: var(--berry);
+        z-index: 2;
+      }
+      .tag {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        text-decoration: none;
+        padding: 54px 26px 26px;
+        border: 2px solid var(--berry);
+        border-radius: 20px 20px 20px 60px;
+        background: var(--blush);
+        min-height: 230px;
+        transition: box-shadow 0.3s;
+      }
+      .tag:hover {
+        box-shadow: 8px 8px 0 var(--berry);
+      }
+      .tag::before {
+        content: "";
+        position: absolute;
+        top: 18px;
+        left: 24px;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: var(--petal);
+        border: 2px solid var(--berry);
+      }
+      .tag .k {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--muted);
+      }
+      .tag .n {
+        font-family: var(--display);
+        font-size: clamp(28px, 2.6vw, 34px);
+        font-weight: 700;
+      }
+      .tag .d {
+        font-size: 16px;
+        line-height: 1.5;
+      }
+      .tag.pink {
+        background: var(--ribbon);
+      }
+      .tag.pink .k,
+      .tag.lil .k {
+        color: var(--berry);
+      }
+      .tag.lil {
+        background: var(--lilac);
+      }
+      .tag.white {
+        background: #fff;
+      }
+      .tag.empty {
+        background: transparent;
+        border-style: dashed;
+        justify-content: center;
+      }
+      .tag.empty .hand {
+        font-size: 32px;
+        line-height: 1.05;
+      }
+      .live {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .live::before {
+        content: "";
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: var(--rose);
+        animation: pulse 1.6s infinite;
+      }
+      @keyframes pulse {
+        0% {
+          box-shadow: 0 0 0 0 rgba(217, 58, 114, 0.7);
+        }
+        70% {
+          box-shadow: 0 0 0 10px rgba(217, 58, 114, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(217, 58, 114, 0);
+        }
+      }
+      .promise {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        margin: 70px auto 0;
+        width: fit-content;
+        max-width: 100%;
+        padding: 20px 32px;
+        background: var(--berry);
+        color: var(--blush);
+        border-radius: 999px;
+        font-size: clamp(16px, 1.8vw, 20px);
+        font-weight: 500;
+      }
+      .promise > span:first-child {
+        width: 46px;
+        flex: none;
+        display: inline-flex;
+        animation: wiggle 2.6s ease-in-out infinite;
+      }
+
+      /* ---------- stage ---------- */
+      .stage-top {
+        display: grid;
+        grid-template-columns: 1fr 1.15fr;
+        gap: 48px;
+        align-items: center;
+        margin-bottom: 80px;
+      }
+      .stage-top h2 {
+        font-size: clamp(44px, 6.5vw, 86px);
+      }
+      .stage-top p {
+        font-size: clamp(17px, 1.6vw, 20px);
+        line-height: 1.55;
+        margin-top: 20px;
+        max-width: 520px;
+      }
+      .ticket {
+        position: relative;
+        display: flex;
+        background: var(--rose);
+        color: #fff;
+        border: 2px solid var(--berry);
+        border-radius: 24px;
+        box-shadow: 8px 8px 0 var(--berry);
+      }
+      .ticket.in {
+        transition:
+          transform 0.5s var(--ease),
+          opacity 0.8s;
+      }
+      .ticket:hover {
+        transform: rotate(-2deg) scale(1.02);
+      }
+      .ticket .main {
+        flex: 1;
+        padding: clamp(24px, 3vw, 38px);
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .ticket .k {
+        font-size: 15px;
+        font-weight: 600;
+      }
+      .ticket .t {
+        font-family: var(--display);
+        font-size: clamp(24px, 2.8vw, 36px);
+        line-height: 1.1;
+        font-weight: 700;
+      }
+      .ticket .stub {
+        width: 130px;
+        border-left: 3px dashed #fff;
+        display: grid;
+        place-items: center;
+        transition: transform 0.6s var(--ease);
+        transform-origin: left center;
+      }
+      .ticket:hover .stub {
+        transform: rotate(10deg) translate(10px, 6px);
+      }
+      .ticket .stub span {
+        font-family: var(--hand);
+        font-size: 34px;
+        font-weight: 700;
+        transform: rotate(-90deg);
+        white-space: nowrap;
+      }
+      .notch {
+        position: absolute;
+        right: 114px;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: var(--blush);
+        border: 2px solid var(--berry);
+      }
+      .notch.t {
+        top: -16px;
+      }
+      .notch.b {
+        bottom: -16px;
+      }
+      .journey {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 24px;
+        position: relative;
+      }
+      .journey::before {
+        content: "";
+        position: absolute;
+        top: 26px;
+        left: 26px;
+        right: 0;
+        height: 4px;
+        background: repeating-linear-gradient(
+          90deg,
+          var(--berry) 0 8px,
+          transparent 8px 16px
+        );
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 1.8s ease;
+      }
+      .journey.in::before {
+        transform: scaleX(1);
+      }
+      .journey li {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        position: relative;
+      }
+      .journey li > div {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .dot {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: var(--ribbon);
+        border: 2px solid var(--berry);
+        display: grid;
+        place-items: center;
+        font-family: var(--display);
+        font-size: 22px;
+        font-weight: 700;
+        transform: scale(0);
+        transition: transform 0.6s var(--ease);
+        transition-delay: calc(var(--i) * 0.35s + 0.2s);
+        position: relative;
+        z-index: 1;
+      }
+      .journey.in .dot {
+        transform: scale(1);
+      }
+      .journey li:last-child .dot {
+        background: var(--rose);
+        color: #fff;
+      }
+      .journey h3 {
+        font-size: 26px;
+        font-weight: 600;
+      }
+      .journey p {
+        font-size: 17px;
+        line-height: 1.5;
+      }
+      .events {
+        margin-top: 90px;
+      }
+      .events .top {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-bottom: 24px;
+      }
+      .events h3 {
+        font-size: clamp(30px, 3.5vw, 42px);
+      }
+      .events .top a {
+        font-weight: 600;
+        font-size: 17px;
+      }
+      .stubs {
+        overflow: hidden;
+        -webkit-mask-image: linear-gradient(
+          90deg,
+          transparent,
+          #000 8%,
+          #000 92%,
+          transparent
+        );
+        mask-image: linear-gradient(
+          90deg,
+          transparent,
+          #000 8%,
+          #000 92%,
+          transparent
+        );
+      }
+      .stubs .row {
+        display: flex;
+        gap: 14px;
+        width: max-content;
+        animation: marquee 38s linear infinite;
+        padding: 10px 0;
+      }
+      .stubs .row.rev {
+        animation-direction: reverse;
+        animation-duration: 44s;
+      }
+      .stubs:hover .row {
+        animation-play-state: paused;
+      }
+      .ev {
+        padding: 14px 22px;
+        background: #fff;
+        border: 2px solid var(--berry);
+        border-left: 8px solid var(--rose);
+        border-radius: 10px;
+        font-size: 18px;
+        font-weight: 600;
+        white-space: nowrap;
+        transition: transform 0.3s var(--ease);
+      }
+      .ev:nth-child(3n + 2) {
+        border-left-color: var(--lilac);
+      }
+      .ev:nth-child(3n) {
+        border-left-color: var(--ribbon);
+      }
+      .ev:hover {
+        transform: rotate(-3deg) scale(1.08);
+      }
+
+      /* ---------- wins ---------- */
+      .wins h2 {
+        font-size: clamp(40px, 5.5vw, 70px);
+        margin-bottom: 56px;
+      }
+      .rosettes {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 32px;
+      }
+      .win {
+        display: flex;
+        align-items: center;
+        gap: 22px;
+      }
+      .win > svg {
+        width: 96px;
+        flex: none;
+        transform: scale(0) rotate(-200deg);
+        transition: transform 1.1s var(--ease);
+        transition-delay: calc(var(--i) * 0.2s + 0.2s);
+      }
+      .win.in > svg {
+        transform: none;
+      }
+      .win:hover .ring {
+        animation: spin 3s linear infinite;
+        transform-origin: 48px 46px;
+      }
+      .win h3 {
+        font-size: 24px;
+        font-weight: 600;
+      }
+      .win p {
+        font-size: 17px;
+        margin-top: 6px;
+      }
+
+      /* ---------- about ---------- */
+      .about {
+        background: var(--lilac);
+        border-block: 2px solid var(--berry);
+      }
+      .about-grid {
+        display: grid;
+        grid-template-columns: 0.8fr 1.2fr;
+        gap: clamp(40px, 6vw, 96px);
+        align-items: start;
+      }
+      .about .polaroid {
+        position: relative;
+        left: auto;
+        top: auto;
+        width: 100%;
+        max-width: 400px;
+        transform: rotate(-4deg);
+        box-shadow: 12px 12px 0 var(--berry);
+      }
+      .about .photo {
+        background: var(--ribbon);
+      }
+      .about h2 {
+        font-size: clamp(44px, 6.5vw, 86px);
+        margin-bottom: 26px;
+      }
+      .about p.body {
+        font-size: clamp(17px, 1.7vw, 21px);
+        line-height: 1.6;
+        margin-bottom: 18px;
+        max-width: 640px;
+      }
+      .now {
+        display: grid;
+        grid-template-columns: 1.6fr 1fr;
+        gap: 18px;
+        margin-top: 30px;
+        padding: 28px;
+        background: var(--blush);
+        border: 2px solid var(--berry);
+        border-radius: 24px;
+      }
+      .now .k {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--muted);
+      }
+      .now .v {
+        font-family: var(--display);
+        font-size: clamp(18px, 2vw, 22px);
+        font-weight: 600;
+        margin-top: 6px;
+        min-height: 1.3em;
+      }
+      .type {
+        border-right: 3px solid var(--rose);
+        padding-right: 4px;
+        animation: caret 0.8s step-end infinite;
+      }
+      @keyframes caret {
+        50% {
+          border-color: transparent;
+        }
+      }
+
+      /* ---------- contact ---------- */
+      .contact {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+        padding-bottom: 40px;
+      }
+      .contact .cbow {
+        width: clamp(140px, 16vw, 200px);
+        display: inline-flex;
+        cursor: pointer;
+      }
+      .contact .cbow svg {
+        animation: wiggle 2.8s ease-in-out infinite;
+      }
+      .contact h2 {
+        font-size: clamp(46px, 7.5vw, 100px);
+        max-width: 1040px;
+      }
+      .contact h2 .ch {
+        display: inline-block;
+        animation: wave 3s ease-in-out infinite;
+        animation-delay: calc(var(--i) * 0.05s);
+      }
+      @keyframes wave {
+        0%,
+        60%,
+        100% {
+          transform: none;
+        }
+        30% {
+          transform: translateY(-14px);
+        }
+      }
+      .contact p {
+        font-size: clamp(17px, 1.8vw, 21px);
+        line-height: 1.55;
+        max-width: 620px;
+      }
+      .socials {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+      }
+      .soc {
+        text-decoration: none;
+        padding: 12px 22px;
+        border: 2px solid var(--berry);
+        border-radius: 999px;
+        font-weight: 600;
+        transition:
+          transform 0.3s var(--ease),
+          background 0.3s;
+      }
+      .soc:hover {
+        background: var(--lilac);
+        transform: translateY(-4px) rotate(3deg);
+      }
+      footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin: 70px var(--pad) 0;
+        padding: 28px 0 calc(28px + env(safe-area-inset-bottom, 0px));
+        border-top: 2px solid var(--berry);
+        font-size: 15px;
+      }
+      footer .hand {
+        font-size: 26px;
+      }
+
+      /* ---------- cursor sparkle + confetti ---------- */
+      .spark,
+      .conf {
+        position: fixed;
+        pointer-events: none;
+        z-index: 90;
+        left: 0;
+        top: 0;
+      }
+      .spark {
+        width: 16px;
+        animation: sparkfade 0.9s ease-out forwards;
+      }
+      @keyframes sparkfade {
+        0% {
+          opacity: 1;
+          transform: translate(var(--x), var(--y)) scale(1) rotate(0);
+        }
+        100% {
+          opacity: 0;
+          transform: translate(
+              calc(var(--x) + var(--dx)),
+              calc(var(--y) + 40px)
+            )
+            scale(0.2) rotate(120deg);
+        }
+      }
+      .conf {
+        animation: burst 1.4s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
+      }
+      @keyframes burst {
+        0% {
+          opacity: 1;
+          transform: translate(var(--x), var(--y)) scale(0.3) rotate(0);
+        }
+        100% {
+          opacity: 0;
+          transform: translate(
+              calc(var(--x) + var(--dx)),
+              calc(var(--y) + var(--dy))
+            )
+            scale(1) rotate(var(--rot));
+        }
+      }
+
+      /* ---------- dark berry section ---------- */
+      .dark {
+        background: var(--berry);
+        color: var(--blush);
+        border-block: 2px solid var(--berry);
+      }
+      .dark a {
+        color: var(--blush);
+      }
+      .dark .ticket {
+        box-shadow: 8px 8px 0 var(--ribbon);
+        border-color: var(--blush);
+      }
+      .dark .notch {
+        background: var(--berry);
+        border-color: var(--blush);
+      }
+      .dark .journey::before {
+        background: repeating-linear-gradient(
+          90deg,
+          var(--ribbon) 0 8px,
+          transparent 8px 16px
+        );
+      }
+      .dark .dot {
+        color: var(--berry);
+        border-color: var(--blush);
+      }
+      .dark .journey li:last-child .dot {
+        color: #fff;
+      }
+      .dark .journey p,
+      .dark .stage-top p {
+        color: #f6d9e4;
+      }
+      .dark .ev {
+        color: var(--berry);
+        border-color: var(--berry);
+      }
+      .dark .events .top a {
+        color: var(--ribbon);
+      }
+      .dark a:focus-visible {
+        outline-color: var(--ribbon);
+      }
+
+      /* ---------- responsive ---------- */
+      @media (max-width: 1080px) {
+        .cards {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .card:nth-child(even) {
+          margin-top: 0;
+        }
+        .tags {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+        .stage-top {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 860px) {
+        .burger {
+          display: block;
+        }
+        .links {
+          position: fixed;
+          inset: 0;
+          flex-direction: column;
+          justify-content: center;
+          gap: 18px;
+          background: var(--ribbon);
+          font-family: var(--display);
+          font-size: 38px;
+          clip-path: circle(0 at calc(100% - 44px) 44px);
+          transition: clip-path 0.7s cubic-bezier(0.77, 0, 0.18, 1);
+          visibility: hidden;
+        }
+        .nav.open .links {
+          clip-path: circle(150% at calc(100% - 44px) 44px);
+          visibility: visible;
+        }
+        .links a {
+          opacity: 0;
+          transform: translateY(20px);
+          transition:
+            opacity 0.4s,
+            transform 0.5s var(--ease);
+        }
+        .nav.open .links a {
+          opacity: 1;
+          transform: none;
+        }
+        .nav.open .links a:nth-child(2) {
+          transition-delay: 0.08s;
+        }
+        .nav.open .links a:nth-child(3) {
+          transition-delay: 0.16s;
+        }
+        .nav.open .links a:nth-child(4) {
+          transition-delay: 0.24s;
+        }
+        .links .pill {
+          font-family: var(--body);
+          font-size: 20px;
+        }
+        .nav.open {
+          background: transparent !important;
+          box-shadow: none !important;
+          backdrop-filter: none !important;
+        }
+        .hero {
+          grid-template-columns: 1fr;
+          min-height: auto;
+        }
+        .stage {
+          height: 540px;
+          max-width: 440px;
+          width: 100%;
+          margin: 10px auto 0;
+        }
+        .tags {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .journey {
+          grid-template-columns: 1fr;
+          gap: 34px;
+        }
+        .journey::before {
+          top: 0;
+          bottom: 0;
+          left: 26px;
+          right: auto;
+          width: 4px;
+          height: auto;
+          background: repeating-linear-gradient(
+            180deg,
+            var(--berry) 0 8px,
+            transparent 8px 16px
+          );
+          transform: scaleY(0);
+          transform-origin: top;
+        }
+        .journey.in::before {
+          transform: scaleY(1);
+        }
+        .dark .journey::before {
+          background: repeating-linear-gradient(
+            180deg,
+            var(--ribbon) 0 8px,
+            transparent 8px 16px
+          );
+        }
+        .journey li {
+          flex-direction: row;
+          align-items: flex-start;
+          gap: 20px;
+        }
+        .journey li > div {
+          padding-top: 8px;
+        }
+        .journey .dot {
+          flex: none;
+        }
+        .rosettes {
+          grid-template-columns: 1fr;
+          gap: 26px;
+        }
+        .about-grid {
+          grid-template-columns: 1fr;
+        }
+        .about .polaroid {
+          max-width: 320px;
+          margin: 0 auto;
+        }
+        .promise {
+          border-radius: 26px;
+        }
+      }
+      @media (max-width: 560px) {
+        .cards {
+          grid-template-columns: 1fr;
+        }
+        .card {
+          min-height: auto;
+        }
+        .tags {
+          grid-template-columns: 1fr;
+          gap: 64px;
+        }
+        .now {
+          grid-template-columns: 1fr;
+        }
+        .ticket .stub {
+          width: 84px;
+        }
+        .ticket .stub span {
+          font-size: 26px;
+        }
+        .notch {
+          right: 68px;
+        }
+        .btn {
+          padding: 16px 26px;
+          font-size: 17px;
+        }
+        .stage {
+          height: 480px;
+        }
+        .sticker.s3 {
+          width: 70px;
+          height: 70px;
+          font-size: 18px;
+        }
+        .ribbons {
+          height: 150px;
+        }
+        .band.a {
+          top: 24px;
+        }
+        .band.b {
+          top: 78px;
+        }
+        footer {
+          justify-content: center;
+          text-align: center;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+          scroll-behavior: auto !important;
+        }
+        .name .ch,
+        .hero-anim,
+        .rv {
+          opacity: 1 !important;
+          transform: none !important;
+        }
+        .loader {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- LOADER -->
+    <div class="loader" aria-hidden="true">
+      <div class="half l"></div>
+      <div class="half r"></div>
+      <svg class="lbow" viewBox="0 0 120 84">
+        <path
+          d="M56 44 L38 80 L49 75 L53 84 L60 46 Z"
+          fill="#D93A72"
+          stroke="#4A0F2B"
+          stroke-width="3"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M64 44 L82 80 L71 75 L67 84 L60 46 Z"
+          fill="#D93A72"
+          stroke="#4A0F2B"
+          stroke-width="3"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M60 40 C40 8, 6 10, 9 34 C12 58, 40 56, 60 40 Z"
+          fill="#D93A72"
+          stroke="#4A0F2B"
+          stroke-width="3"
+        />
+        <path
+          d="M60 40 C80 8, 114 10, 111 34 C108 58, 80 56, 60 40 Z"
+          fill="#D93A72"
+          stroke="#4A0F2B"
+          stroke-width="3"
+        />
+        <ellipse
+          cx="60"
+          cy="40"
+          rx="10"
+          ry="12"
+          fill="#FFF4F7"
+          stroke="#4A0F2B"
+          stroke-width="3"
+        />
+      </svg>
+      <div class="ltext">tying the bow...</div>
+    </div>
+
+    <div class="progress" aria-hidden="true"></div>
+    <div class="floaties" aria-hidden="true"></div>
+
+    <!-- NAV -->
+    <nav class="nav" aria-label="Main">
+      <a href="#top" class="logo" aria-label="whakee, back to top"
+        ><span data-bow="mini"></span>whakee</a
+      >
+      <div class="links" id="menu">
+        <a href="#brands">brands</a>
+        <a href="#stage">stage &amp; events</a>
+        <a href="#about">about</a>
+        <a href="#hello" class="pill">work with me</a>
+      </div>
+      <button
+        class="burger"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="menu"
+      >
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+
+    <main id="top">
+      <!-- HERO -->
+      <section class="hero wrap">
+        <div>
+          <span class="hello hand hero-anim" style="--d: 1.2s"
+            >hiii, you found my corner &lt;3</span
+          >
+          <h1 class="name" data-letters>whakee</h1>
+          <p class="lede hero-anim" style="--d: 1.7s">
+            web3 content creator, KOL and marketing lead. i make crypto, tech
+            and web3 feel like a conversation with a friend, not a lecture.
+          </p>
+          <div class="roles hero-anim" style="--d: 1.85s">
+            <span class="role">marketing lead · pxxl</span>
+            <span class="role">Founder · Next Gen Summit'26</span>
+            <span class="role">co-founder &amp; CTO · Foorm</span>
+            <span class="role lilac">frontend developer</span>
+          </div>
+          <div class="ctas hero-anim" style="--d: 2s">
+            <a href="#brands" class="btn primary magnet">see my campaigns</a>
+            <a href="#hello" class="btn ghost magnet">send a brief</a>
+          </div>
+        </div>
+        <div class="stage hero-anim" style="--d: 1.5s">
+          <div class="polaroid tilt">
+            <div class="photo">
+               <img src="whakee.jpg" alt="whakee at an event">
+              
+            </div>
+            <p class="cap hand">soft life ambassador</p>
+          </div>
+          <span class="bigbow" data-bow="big" title="tap me"></span>
+          <div class="sticker s1">6.5k+ on X</div>
+          <div class="sticker s2">global whakee</div>
+          <div class="sticker s3">creator<br />mode on</div>
+        </div>
+      </section>
+
+      <!-- RIBBONS -->
+      <div class="ribbons" aria-hidden="true">
+        <div class="band a">
+          <div
+            class="track"
+            data-marquee="content,community,marketing,building,storytelling"
+          ></div>
+        </div>
+        <div class="band b">
+          <div
+            class="track"
+            data-marquee="ugc,cinematic shoots,x threads,video breakdowns,event hosting"
+          ></div>
+        </div>
+      </div>
+
+      <!-- WHAT I DO -->
+      <section class="sec band-light wrap">
+        <div class="head rv">
+          <h2 data-split>i make the complicated feel soft.</h2>
+          <p>
+            casual and creative storytelling. my best work is personal
+            journey posts and video breakdowns that don't feel like ads.
+          </p>
+        </div>
+        <div class="cards">
+          <article class="card rv tilt" style="--i: 0">
+            <div class="ico">
+              <svg
+                width="30"
+                height="30"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#4A0F2B"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <rect x="3" y="6" width="13" height="12" rx="3" />
+                <path d="M16 10l5-3v10l-5-3" />
+              </svg>
+            </div>
+            <h3>content</h3>
+            <p>
+              UGC and cinematic videos, usually outdoors, with real people as
+              characters. the goal: it should feel like a movie.
+            </p>
+            <span class="num" aria-hidden="true">c</span>
+          </article>
+          <article class="card rv tilt" style="--i: 1">
+            <div class="ico">
+              <svg
+                width="30"
+                height="30"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#4A0F2B"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <circle cx="9" cy="8" r="3.2" />
+                <circle cx="17" cy="9" r="2.6" />
+                <path d="M3 19c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5" />
+                <path d="M15 14.2c3 0 6 1.6 6 4.8" />
+              </svg>
+            </div>
+            <h3>community</h3>
+            <p>
+              hosting, teaching, paneling and leading rooms across web2 and web3
+              events in nigeria.
+            </p>
+            <span class="num" aria-hidden="true">c</span>
+          </article>
+          <article class="card rv tilt" style="--i: 2">
+            <div class="ico">
+              <svg
+                width="30"
+                height="30"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#4A0F2B"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M3 11v2a1 1 0 0 0 1 1h3l6 5V5L7 10H4a1 1 0 0 0-1 1z" />
+                <path d="M17 9a4 4 0 0 1 0 6" />
+              </svg>
+            </div>
+            <h3>marketing</h3>
+            <p>
+              leading marketing for pxxl, NextBridge Africa and Enugu Blockchain
+              Week 2026.
+            </p>
+            <span class="num" aria-hidden="true">m</span>
+          </article>
+          <article class="card rv tilt" style="--i: 3">
+            <div class="ico">
+              <svg
+                width="30"
+                height="30"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#4A0F2B"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M8 7l-5 5 5 5" />
+                <path d="M16 7l5 5-5 5" />
+                <path d="M13.5 4l-3 16" />
+              </svg>
+            </div>
+            <h3>building</h3>
+            <p>
+              i understand products from the inside, because i ship them too.
+              co-founder and CTO of Foorm.
+            </p>
+            <span class="num" aria-hidden="true">b</span>
+          </article>
+        </div>
+        <div class="tools rv">
+          <span class="hand">in my toolbox:</span>
+          <span class="chip">X threads</span
+          ><span class="chip">video breakdowns</span
+          ><span class="chip">UGC</span
+          ><span class="chip">cinematic shoots</span
+          ><span class="chip">event hosting</span
+          ><span class="chip">campaign strategy</span
+          ><span class="chip">community building</span
+          ><span class="chip">Next.js &amp; React</span>
+        </div>
+      </section>
+
+      <!-- BRANDS -->
+      <section id="brands" class="sec wrap">
+        <div class="head rv">
+          <h2 data-split>brands i've told stories for</h2>
+          <p>
+            each one hangs on the line like a little gift tag. tap one to see
+            the campaign.
+          </p>
+        </div>
+        <div class="line-wrap">
+          <svg
+            class="clothesline"
+            viewBox="0 0 1000 60"
+            preserveAspectRatio="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M0 8 Q500 50 1000 8"
+              fill="none"
+              stroke="#4A0F2B"
+              stroke-width="2.5"
+              vector-effect="non-scaling-stroke"
+            />
+          </svg>
+          <div class="tags">
+            <div class="tagw" style="--i: 0; --r: -2deg">
+              <span class="string"></span
+              ><a class="tag white" href="https://x.com/whakee_/status/2089618909867512193?s=20"
+                ><span class="k">fintech</span><span class="n">Cleva</span
+                ><span class="d"
+                  >campaign speaking to nigerian freelancers about getting
+                  paid.</span
+                ></a
+              >
+            </div>
+            <div class="tagw" style="--i: 1; --r: 1.5deg">
+              <span class="string"></span
+              ><a class="tag pink" href="https://x.com/whakee_/status/2106338202332078225?s=20"
+                ><span class="k live">creator campaign · live now</span
+                ><span class="n">Swapto</span
+                ><span class="d"
+                  >a four-week creator run for Crand Technologies'
+                  rebrand.</span
+                ></a
+              >
+            </div>
+            <div class="tagw" style="--i: 2; --r: -1deg">
+              <span class="string"></span
+              ><a class="tag lil" href="https://x.com/whakee_/status/2086182879894106525?s=20"
+                ><span class="k">Solana Summit</span
+                ><span class="n">Panta</span
+                ><span class="d"
+                  >Whakee at solana summit,uyo.</span
+                ></a
+              >
+            </div>
+            
+           
+            <div class="tagw" style="--i: 7; --r: 1.5deg">
+              <span class="string"></span
+              ><a class="tag empty" href="#hello"
+                ><span class="hand">your brand could be next</span
+                ><span
+                  class="d"
+                  style="font-weight: 600; text-decoration: underline"
+                  >let's talk</span
+                ></a
+              >
+            </div>
+          </div>
+        </div>
+        <div class="promise rv">
+          <span data-bow="mini-light"></span
+          ><span
+            >i check every project before i post about it. my audience's trust
+            comes first.</span
+          >
+        </div>
+      </section>
+
+      <!-- STAGE -->
+      <section id="stage" class="sec dark wrap">
+        <div class="stage-top">
+          <div class="rv">
+            <h2 data-split>from the crowd to the stage</h2>
+            <p>
+              about three years ago i started showing up to tech events. then i
+              started volunteering at all of them. now i'm the one holding the
+              mic.
+            </p>
+          </div>
+          <div class="ticket rv" style="--i: 1">
+            <div class="main">
+              <span class="k">speaker · tech summit, calabar · sept 17</span>
+              <span class="t"
+                >Proof of Work: Building in Public Before You Have Anything to
+                Show</span
+              >
+              <span>breakout session on AI, content and builders</span>
+            </div>
+            <div class="stub"><span>admit one</span></div>
+            <span class="notch t"></span><span class="notch b"></span>
+          </div>
+        </div>
+
+        <ol class="journey" data-watch>
+          <li style="--i: 0">
+            <span class="dot">1</span>
+            <div>
+              <h3>showed up</h3>
+              <p>attended every web2 and web3 event i could find.</p>
+            </div>
+          </li>
+          <li style="--i: 1">
+            <span class="dot">2</span>
+            <div>
+              <h3>volunteered</h3>
+              <p>
+                teaching, hosting, content and community work behind the scenes.
+              </p>
+            </div>
+          </li>
+          <li style="--i: 2">
+            <span class="dot">3</span>
+            <div>
+              <h3>spoke</h3>
+              <p>speaking and paneling on stages across the south.</p>
+            </div>
+          </li>
+          <li style="--i: 3">
+            <span class="dot">4</span>
+            <div>
+              <h3>leading</h3>
+              <p>
+                host,nextgensummit
+              </p>
+            </div>
+          </li>
+        </ol>
+
+        <div class="events rv">
+          <div class="top">
+            <h3>rooms i've helped run</h3>
+            <a href="https://vt.tiktok.com/ZS9UjRWEdGMrK-1GOBw/"
+              >watch the footage on eventaholic (39 posts)</a
+            >
+          </div>
+          <div
+            class="stubs"
+            data-events="Chain2055,Bloqfest,PHP Connect,Ibom Blockchain Week,Akwa Ibom Tech Week,Innovate 25,Web3 Conf Enugu,Tech Ignite,DreamSpace Appathon,Fhenix"
+          ></div>
+        </div>
+      </section>
+
+      <!-- WINS -->
+      <section class="sec wins wrap">
+        <h2 class="rv" data-split>a few ribbons on the shelf</h2>
+        <div class="rosettes">
+          <div class="win rv" style="--i: 0">
+            <span data-rosette="1st" data-tail="#D93A72"></span>
+            <div>
+              <h3>Hack for Good 2.0</h3>
+              <p>1st place, with Medivault</p>
+            </div>
+          </div>
+          <div class="win rv" style="--i: 1">
+            <span data-rosette="3rd" data-tail="#D9C9F5"></span>
+            <div>
+              <h3>SheCode Africa HertoberFest</h3>
+              <p>3rd place, with SupportHive</p>
+            </div>
+          </div>
+          <div class="win rv" style="--i: 2">
+            <span data-rosette="check" data-tail="#D93A72"></span>
+            <div>
+              <h3>Hult Prize</h3>
+              <p>campus winner</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABOUT -->
+      <section id="about" class="sec about wrap">
+        <div class="about-grid">
+          <div class="rv">
+            <div class="polaroid tilt">
+              <div class="photo">
+                <span>
+                  <img src="/eventaholic.JPG" />
+                </span>
+              </div>
+              <p class="cap hand">eventaholic, obviously</p>
+            </div>
+          </div>
+          <div class="rv" style="--i: 1">
+            <h2 data-split>behind the bow</h2>
+            <p class="body">
+              i'm Ekong Uwakmfon Moses, but everyone calls me whakee. i study
+              communication arts at the university of uyo, so telling stories
+              well is literally my homework.
+            </p>
+            <p class="body">
+              i got into tech about three years ago and never left. i write
+              code, i run campaigns, i host rooms, and i lead YOFSUD, a youth
+              NGO working on climate, education and community development in
+              nigeria.
+            </p>
+            <div class="now">
+              <div>
+                <div class="k">right now i'm</div>
+                <div class="v">
+                  <span
+                    class="type"
+                    data-type="creating the Swapto campaign|leading pxxl marketing|leading NextBridge marketing|building Foorm|organizing a tech day in uyo"
+                  ></span>
+                </div>
+              </div>
+              <div>
+                <div class="k">based in</div>
+                <div class="v">uyo, nigeria</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTACT -->
+      <section id="hello" class="sec contact wrap">
+        <span class="cbow rv" data-bow="big" title="tap me"></span>
+        <h2 class="rv" data-wave>
+          got a campaign? let's make it feel like a movie.
+        </h2>
+        <p class="rv">
+          brand partnerships, event hosting, speaking or marketing help. send me
+          the brief and i'll get back to you.
+        </p>
+        <div class="ctas rv" style="justify-content: center">
+          <a href="mailto:uwakmfone470@gmail.com" class="btn primary magnet" id="confetti"
+            >email me</a
+          >
+          <a href="https://app.notion.com/p/mini-portfolio-35155ceabf3480f4a03de7c4340bb991?source=copy_link" class="btn ghost magnet"
+            >get my media kit</a
+          >
+        </div>
+        <div class="socials rv">
+          <a class="soc" href="https://x.com/whakee_">X</a>
+          <a class="soc" href="https://x.com/whakee_">TikTok</a>
+          
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>© 2026 whakee</span>
+      <span class="hand"
+        >tied together with bows &amp; too much content &lt;3</span
+      >
+      <a href="#top" style="font-weight: 600">back to top</a>
+    </footer>
+
+    <script>
+      (function () {
+        const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const fine = matchMedia("(pointer: fine)").matches;
+
+        /* ---- svg builders ---- */
+        const bow = (fill, stroke, tails) =>
+          `<svg viewBox="0 0 120 84" aria-hidden="true" style="width:100%;height:auto;display:block">${tails ? `<path d="M56 44 L38 80 L49 75 L53 84 L60 46 Z" fill="${fill}" stroke="${stroke}" stroke-width="3" stroke-linejoin="round"/><path d="M64 44 L82 80 L71 75 L67 84 L60 46 Z" fill="${fill}" stroke="${stroke}" stroke-width="3" stroke-linejoin="round"/>` : ""}<path d="M60 40 C40 8, 6 10, 9 34 C12 58, 40 56, 60 40 Z" fill="${fill}" stroke="${stroke}" stroke-width="3"/><path d="M60 40 C80 8, 114 10, 111 34 C108 58, 80 56, 60 40 Z" fill="${fill}" stroke="${stroke}" stroke-width="3"/><path d="M24 30 C30 24, 40 26, 46 32" fill="none" stroke="${stroke}" stroke-width="2.5" stroke-linecap="round"/><path d="M96 30 C90 24, 80 26, 74 32" fill="none" stroke="${stroke}" stroke-width="2.5" stroke-linecap="round"/><ellipse cx="60" cy="40" rx="10" ry="12" fill="#F9B8CF" stroke="${stroke}" stroke-width="3"/></svg>`;
+        const heart = (c) =>
+          `<svg viewBox="0 0 24 24" aria-hidden="true" style="width:100%;height:auto;display:block"><path d="M12 21s-7.5-4.6-9.5-9.2C1 8.2 3.3 4.5 7 4.5c2.1 0 3.6 1.2 5 3 1.4-1.8 2.9-3 5-3 3.7 0 6 3.7 4.5 7.3C19.5 16.4 12 21 12 21z" fill="${c}" stroke="#4A0F2B" stroke-width="1.5"/></svg>`;
+        const star = (c) =>
+          `<svg viewBox="0 0 24 24" aria-hidden="true" style="width:100%;height:auto;display:block"><path d="M12 1l2.6 8.4L23 12l-8.4 2.6L12 23l-2.6-8.4L1 12l8.4-2.6z" fill="${c}" stroke="#4A0F2B" stroke-width="1"/></svg>`;
+
+        document.querySelectorAll("[data-bow]").forEach((el) => {
+          const t = el.dataset.bow;
+          if (t === "mini") el.innerHTML = bow("#D93A72", "#4A0F2B", false);
+          else if (t === "mini-light")
+            el.innerHTML = bow("#D93A72", "#FFF4F7", false);
+          else el.innerHTML = bow("#D93A72", "#4A0F2B", true);
+        });
+        document.querySelectorAll("[data-rosette]").forEach((el) => {
+          const v = el.dataset.rosette,
+            tc = el.dataset.tail;
+          const mid =
+            v === "check"
+              ? '<path d="M36 46 L44 54 L60 38" fill="none" stroke="#4A0F2B" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>'
+              : `<text x="48" y="56" text-anchor="middle" font-family="DynaPuff, cursive" font-size="27" font-weight="700" fill="#4A0F2B">${v}</text>`;
+          el.outerHTML = `<svg viewBox="0 0 96 130" aria-hidden="true"><path d="M30 70 L18 126 L34 116 L42 128 L48 76 Z" fill="${tc}" stroke="#4A0F2B" stroke-width="3" stroke-linejoin="round"/><path d="M66 70 L78 126 L62 116 L54 128 L48 76 Z" fill="${tc}" stroke="#4A0F2B" stroke-width="3" stroke-linejoin="round"/><circle class="ring" cx="48" cy="46" r="40" fill="#F9B8CF" stroke="#4A0F2B" stroke-width="3" stroke-dasharray="6 4"/><circle cx="48" cy="46" r="28" fill="#FFF4F7" stroke="#4A0F2B" stroke-width="3"/>${mid}</svg>`;
+        });
+
+        /* ---- hero letters ---- */
+        const nm = document.querySelector("[data-letters]");
+        nm.setAttribute("aria-label", nm.textContent);
+        nm.innerHTML = [...nm.textContent]
+          .map(
+            (c, i) =>
+              `<span class="ch" aria-hidden="true" style="--i:${i}">${c}</span>`,
+          )
+          .join("");
+        nm.querySelectorAll(".ch").forEach((ch) => {
+          const go = () => {
+            if (!document.body.classList.contains("ready")) return;
+            ch.classList.remove("jump");
+            void ch.offsetWidth;
+            ch.classList.add("jump");
+          };
+          ch.addEventListener("mouseenter", go);
+          ch.addEventListener("touchstart", go, { passive: true });
+        });
+
+        /* ---- split headings ---- */
+        document.querySelectorAll("[data-split]").forEach((h) => {
+          h.setAttribute("aria-label", h.textContent);
+          h.innerHTML = h.textContent
+            .split(" ")
+            .map(
+              (w, i) =>
+                `<span class="split-word" aria-hidden="true"><span style="--w:${i}">${w}</span></span>`,
+            )
+            .join(" ");
+        });
+        document.querySelectorAll("[data-wave]").forEach((h) => {
+          h.setAttribute("aria-label", h.textContent);
+          let i = 0;
+          h.innerHTML = h.textContent
+            .split(" ")
+            .map(
+              (w) =>
+                `<span style="display:inline-block;white-space:nowrap" aria-hidden="true">${[...w].map((c) => `<span class="ch" style="--i:${i++}">${c}</span>`).join("")}</span>`,
+            )
+            .join(" ");
+        });
+
+        /* ---- marquees ---- */
+        const sep = bow("#FFF4F7", "#4A0F2B", false);
+        document.querySelectorAll("[data-marquee]").forEach((t) => {
+          const one = t.dataset.marquee
+            .split(",")
+            .map(
+              (w) =>
+                `<span>${w}<span style="width:40px;display:inline-flex">${sep}</span></span>`,
+            )
+            .join("");
+          t.innerHTML = one + one + one + one;
+        });
+        const ev = document.querySelector("[data-events]");
+        const names = ev.dataset.events.split(",");
+        const row = (arr) =>
+          arr.map((n) => `<span class="ev">${n}</span>`).join("");
+        const rn = [...names].reverse();
+        ev.innerHTML = `<div class="row">${row(names)}${row(names)}</div><div class="row rev">${row(rn)}${row(rn)}</div>`;
+
+        /* ---- typewriter ---- */
+        const tp = document.querySelector("[data-type]");
+        const phrases = tp.dataset.type.split("|");
+        if (reduce) {
+          tp.textContent = phrases[0];
+        } else {
+          let p = 0,
+            c = 0,
+            del = false;
+          (function tick() {
+            const s = phrases[p];
+            tp.textContent = s.slice(0, c);
+            if (!del && c < s.length) {
+              c++;
+              setTimeout(tick, 60);
+            } else if (!del) {
+              del = true;
+              setTimeout(tick, 1600);
+            } else if (c > 0) {
+              c--;
+              setTimeout(tick, 28);
+            } else {
+              del = false;
+              p = (p + 1) % phrases.length;
+              setTimeout(tick, 300);
+            }
+          })();
+        }
+
+        /* ---- floating background ---- */
+        const fl = document.querySelector(".floaties");
+        const shapes = [
+          () => bow("#F9B8CF", "#4A0F2B", false),
+          () => heart("#F9B8CF"),
+          () => star("#D93A72"),
+          () => heart("#D9C9F5"),
+          () => star("#D9C9F5"),
+        ];
+        const count = innerWidth < 700 ? 7 : 14;
+        for (let i = 0; i < count; i++) {
+          const d = document.createElement("div");
+          d.className = "floaty";
+          const s = 18 + Math.random() * 34;
+          d.style.cssText = `width:${s}px;left:${Math.random() * 100}%;top:${Math.random() * 100}%;animation-duration:${8 + Math.random() * 10}s;animation-delay:${-Math.random() * 10}s`;
+          d.dataset.depth = (0.2 + Math.random() * 0.8).toFixed(2);
+          d.innerHTML = shapes[i % shapes.length]();
+          fl.appendChild(d);
+        }
+        const floats = [...fl.children];
+
+        /* ---- loader ---- */
+        let isDone = false;
+        const done = () => {
+          if (isDone) return;
+          isDone = true;
+          document.body.classList.add("loaded");
+          setTimeout(() => document.body.classList.add("ready"), 2000);
+        };
+        if (reduce) done();
+        else window.addEventListener("load", () => setTimeout(done, 1300));
+        setTimeout(done, 3500);
+
+        /* ---- scroll: progress, nav, parallax ---- */
+        const prog = document.querySelector(".progress"),
+          nav = document.querySelector(".nav");
+        let ticking = false;
+        function onScroll() {
+          const y = scrollY,
+            h = document.documentElement.scrollHeight - innerHeight;
+          prog.style.transform = `scaleX(${h > 0 ? y / h : 0})`;
+          nav.classList.toggle("scrolled", y > 20);
+          if (!reduce)
+            floats.forEach(
+              (f) => (f.style.translate = `0 ${-y * f.dataset.depth * 0.25}px`),
+            );
+          ticking = false;
+        }
+        addEventListener(
+          "scroll",
+          () => {
+            if (!ticking) {
+              requestAnimationFrame(onScroll);
+              ticking = true;
+            }
+          },
+          { passive: true },
+        );
+        onScroll();
+
+        /* ---- reveal ---- */
+        const io = new IntersectionObserver(
+          (es) =>
+            es.forEach((e) => {
+              if (e.isIntersecting) {
+                e.target.classList.add("in");
+                io.unobserve(e.target);
+              }
+            }),
+          { threshold: 0.15, rootMargin: "0px 0px -40px 0px" },
+        );
+        document
+          .querySelectorAll(".rv,[data-watch],.line-wrap")
+          .forEach((el) => io.observe(el));
+
+        /* ---- mobile menu ---- */
+        const burger = document.querySelector(".burger");
+        const setMenu = (o) => {
+          nav.classList.toggle("open", o);
+          burger.setAttribute("aria-expanded", o);
+          burger.setAttribute("aria-label", o ? "Close menu" : "Open menu");
+          document.body.style.overflow = o ? "hidden" : "";
+        };
+        burger.addEventListener("click", () =>
+          setMenu(!nav.classList.contains("open")),
+        );
+        document
+          .querySelectorAll("#menu a")
+          .forEach((a) => a.addEventListener("click", () => setMenu(false)));
+
+        /* ---- tag swing ---- */
+        document.querySelectorAll(".tagw").forEach((t) => {
+          const go = () => {
+            t.classList.remove("swing");
+            void t.offsetWidth;
+            t.classList.add("swing");
+          };
+          t.addEventListener("mouseenter", go);
+          t.addEventListener("touchstart", go, { passive: true });
+          t.addEventListener("animationend", (e) => {
+            if (e.animationName === "bigswing") t.classList.remove("swing");
+          });
+        });
+
+        if (reduce) return;
+
+        /* ---- 3D tilt ---- */
+        if (fine)
+          document.querySelectorAll(".tilt").forEach((el) => {
+            el.addEventListener("mouseenter", () => {
+              el.dataset.base =
+                getComputedStyle(el).transform === "none"
+                  ? ""
+                  : getComputedStyle(el).transform;
+            });
+            el.addEventListener("mousemove", (e) => {
+              const r = el.getBoundingClientRect(),
+                x = (e.clientX - r.left) / r.width - 0.5,
+                y = (e.clientY - r.top) / r.height - 0.5;
+              el.style.transform = `perspective(900px) ${el.dataset.base || ""} rotateY(${x * 14}deg) rotateX(${-y * 14}deg)`;
+            });
+            el.addEventListener("mouseleave", () => (el.style.transform = ""));
+          });
+
+        /* ---- magnetic buttons ---- */
+        if (fine)
+          document.querySelectorAll(".magnet").forEach((b) => {
+            b.addEventListener("mousemove", (e) => {
+              const r = b.getBoundingClientRect();
+              b.style.transform = `translate(${(e.clientX - r.left - r.width / 2) * 0.25}px,${(e.clientY - r.top - r.height / 2) * 0.35}px) scale(1.05)`;
+            });
+            b.addEventListener("mouseleave", () => (b.style.transform = ""));
+          });
+
+        /* ---- mouse parallax on floaties ---- */
+        if (fine)
+          addEventListener(
+            "mousemove",
+            (e) => {
+              const mx = e.clientX / innerWidth - 0.5,
+                my = e.clientY / innerHeight - 0.5;
+              floats.forEach((f) => {
+                f.style.marginLeft = `${mx * f.dataset.depth * 50}px`;
+                f.style.marginTop = `${my * f.dataset.depth * 50}px`;
+              });
+            },
+            { passive: true },
+          );
+
+        /* ---- sparkle cursor trail ---- */
+        if (fine) {
+          let last = 0;
+          const cols = ["#D93A72", "#F9B8CF", "#D9C9F5"];
+          addEventListener(
+            "mousemove",
+            (e) => {
+              const now = performance.now();
+              if (now - last < 45) return;
+              last = now;
+              const s = document.createElement("div");
+              s.className = "spark";
+              s.style.setProperty("--x", e.clientX - 8 + "px");
+              s.style.setProperty("--y", e.clientY - 8 + "px");
+              s.style.setProperty("--dx", Math.random() * 40 - 20 + "px");
+              s.innerHTML =
+                Math.random() > 0.5
+                  ? star(cols[(Math.random() * 3) | 0])
+                  : heart(cols[(Math.random() * 3) | 0]);
+              document.body.appendChild(s);
+              setTimeout(() => s.remove(), 900);
+            },
+            { passive: true },
+          );
+        }
+
+        /* ---- bow confetti ---- */
+        function burst(x, y) {
+          const cols = ["#D93A72", "#F9B8CF", "#D9C9F5", "#FFF4F7"];
+          for (let i = 0; i < 26; i++) {
+            const c = document.createElement("div");
+            c.className = "conf";
+            const a = Math.random() * Math.PI * 2,
+              d = 120 + Math.random() * 260;
+            c.style.setProperty("--x", x - 17 + "px");
+            c.style.setProperty("--y", y - 12 + "px");
+            c.style.setProperty("--dx", Math.cos(a) * d + "px");
+            c.style.setProperty("--dy", Math.sin(a) * d - 80 + "px");
+            c.style.setProperty("--rot", Math.random() * 720 - 360 + "deg");
+            c.style.width = 20 + Math.random() * 26 + "px";
+            c.innerHTML =
+              i % 3 === 0
+                ? heart(cols[i % 4])
+                : bow(cols[i % 4], "#4A0F2B", false);
+            document.body.appendChild(c);
+            setTimeout(() => c.remove(), 1400);
+          }
+        }
+        const cf = document.getElementById("confetti");
+        cf.addEventListener("click", (e) => {
+          const r = cf.getBoundingClientRect();
+          burst(r.left + r.width / 2, r.top + r.height / 2);
+          const href = cf.getAttribute("href");
+          e.preventDefault();
+          setTimeout(() => (location.href = href), 650);
+        });
+        document
+          .querySelectorAll(".bigbow,.cbow")
+          .forEach((b) =>
+            b.addEventListener("click", (e) => burst(e.clientX, e.clientY)),
+          );
+        nm.addEventListener("dblclick", (e) => burst(e.clientX, e.clientY));
+      })();
+    </script>
+  </body>
+</html>

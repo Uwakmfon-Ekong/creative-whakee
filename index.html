@@ -425,7 +425,7 @@
         }
       }
       body.loaded .name .ch.jump {
-        animation: jump 0.6s var(--ease);
+        animation: jump 0.6s var(--ease) forwards;
         opacity: 1;
       }
       @keyframes jump {
@@ -1510,6 +1510,8 @@
         outline-color: var(--ribbon);
       }
 
+      
+
       /* ---------- responsive ---------- */
       @media (max-width: 1080px) {
         .cards {
@@ -2018,10 +2020,10 @@
               <div class="tagw" style="--i: 3; --r: -1deg">
               <span class="string"></span
               ><a class="tag" href="https://x.com/whakee_/status/2111442317060276588?s=20"
-                ><span class="k">Dev tools</span
-                ><span class="n">Watchup</span
+                ><span class="k">dev tools</span
+                ><span class="n">watchup</span
                 ><span class="d"
-                  >Watchup- a full-stack observability platform</span
+                  >watchup- a full-stack observability platform</span
                 ></a
               >
             </div>
@@ -2030,7 +2032,7 @@
               <span class="string"></span
               ><a class="tag pink" href="https://www.tiktok.com/@whakee1/video/7569903885557533959?is_from_webapp=1&sender_device=pc&web_id=7687129728838977045"
                 ><span class="k">Akwa Ibom tech Week</span
-                ><span class="n">Boifiok</span
+                ><span class="n">boifiok</span
                 ><span class="d"
                   >Whakee at Akwaibom tech week.</span
                 ></a
@@ -2040,15 +2042,37 @@
             <div class="tagw" style="--i: 5; --r: -1deg">
               <span class="string"></span
               ><a class="tag lil" href="https://x.com/whakee_/status/2112263361027285309?s=20"
-                ><span class="k">Ugc video</span
-                ><span class="n">Vistapay</span
+                ><span class="k">ugc video</span
+                ><span class="n">vistapay</span
                 ><span class="d"
                   >A picnic featuring vistapay</span
                 ></a
               >
             </div>
+
+             <div class="tagw" style="--i: 6; --r: -1deg">
+              <span class="string"></span
+              ><a class="tag" href="https://www.tiktok.com/@whakee.on.chain/video/7653600900228992276?is_from_webapp=1&sender_device=pc&web_id=7687129728838977045"
+                ><span class="k">robotics/Tech</span
+                ><span class="n">reality 3d Hub</span
+                ><span class="d"
+                  >a video about reality 3d hub</span
+                ></a
+              >
+            </div>
+
+              <div class="tagw" style="--i: 7; --r: -1deg">
+              <span class="string"></span
+              ><a class="tag pink" href="https://x.com/whakee_/status/2067971291752112336?s=20"
+                ><span class="k">donations</span
+                ><span class="n">myHappr</span
+                ><span class="d"
+                  >turn your audience into your biggest supporters</span
+                ></a
+              >
+            </div>
            
-            <div class="tagw" style="--i: 7; --r: 1.5deg">
+            <div class="tagw" style="--i: 8; --r: 1.5deg">
               <span class="string"></span
               ><a class="tag empty" href="#hello"
                 ><span class="hand">your brand could be next</span
@@ -2399,7 +2423,7 @@
           if (isDone) return;
           isDone = true;
           document.body.classList.add("loaded");
-          setTimeout(() => document.body.classList.add("ready"), 2000);
+          setTimeout(() => document.body.classList.add("ready"), 2400);
         };
         if (reduce) done();
         else window.addEventListener("load", () => setTimeout(done, 1300));
